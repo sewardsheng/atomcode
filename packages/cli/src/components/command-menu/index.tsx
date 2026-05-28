@@ -23,6 +23,16 @@ type CommandMenuProps = {
     onExecute: (index: number) => void;
 };
 
+/**
+ * Displays a scrollable list of commands matching `query`, highlights the selected item, and forwards selection and execution events.
+ *
+ * @param query - Filter string used to compute which commands are shown.
+ * @param selectedIndex - Index of the currently highlighted command within the filtered list.
+ * @param scrollRef - Ref forwarded to the internal ScrollBox component.
+ * @param onSelect - Called with an item's index when the mouse moves over that item.
+ * @param onExecute - Called with an item's index when the item is activated (mouse down).
+ * @returns A JSX element showing the filtered commands or a dimmed "No matching commands" message.
+ */
 export function CommandMenu({
     query,
     selectedIndex,

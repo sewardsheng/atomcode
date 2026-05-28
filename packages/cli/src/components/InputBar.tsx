@@ -24,6 +24,16 @@ export const TEXTAREA_KEY_BINDINGS: KeyBinding[] = [
     { name: 'enter', shift: true, action: 'newline' },
 ];
 
+/**
+ * Render an input bar with a textarea, an optional command menu, and a status bar.
+ *
+ * The component submits trimmed, non-empty text via `onSubmit`, clears the textarea after submission,
+ * and when the command menu is open executes the selected command or inserts its value into the textarea.
+ *
+ * @param onSubmit - Callback invoked with the trimmed input text when the user submits non-empty content
+ * @param disabled - When true, prevents user submission and unfocuses the textarea
+ * @returns The rendered InputBar React element
+ */
 export function InputBar({ onSubmit, disabled = false }: Props) {
     const textareaRef = useRef<TextareaRenderable>(null);
     const onSubmitRef = useRef<() => void>(() => {});

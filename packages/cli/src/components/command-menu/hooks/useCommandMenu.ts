@@ -14,6 +14,23 @@ type UseCommandMenuReturn = {
     setSelectedIndex: (index: number) => void;
 };
 
+/**
+ * Provides state and handlers for a slash-command selection menu tied to a text input.
+ *
+ * Manages whether the menu is visible, the active command query (input after a leading `/`),
+ * the highlighted command index, a scrollable container ref to keep the highlight in view,
+ * content-change handling that toggles the menu and resets selection, command resolution that
+ * dismisses the menu when a valid command is selected, and keyboard navigation for the menu.
+ *
+ * @returns An object with:
+ * - `showCommandMenu`: `true` when the command menu is visible.
+ * - `commandQuery`: the current command query string (input after the leading `/`), or `""`.
+ * - `selectedIndex`: the index of the currently highlighted command.
+ * - `scrollRef`: a ref to the scrollable command list used to keep the highlighted item visible.
+ * - `handleContentChange`: `(text: string) => void` — updates input state, resets selection, scrolls to top, and shows/hides the menu based on the input.
+ * - `resolveCommand`: `(index: number) => Command | undefined` — returns the command at `index` and hides the menu if the command exists.
+ * - `setSelectedIndex`: React state setter for `selectedIndex`.
+ */
 export function useCommandMenu(): UseCommandMenuReturn {
     const [showCommandMenu, setShowCommandMenu] = useState(false);
     const [textValue, setTextValue] = useState("");

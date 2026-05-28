@@ -4,6 +4,15 @@ import { createRoot } from '@opentui/react';
 import { Header } from './components/Header';
 import { InputBar } from './components/InputBar';
 
+/**
+ * Root application component that renders the centered CLI UI with a header and input area.
+ *
+ * The layout centers content, applies a dark background, and constrains the main content width.
+ * The rendered tree includes a Header component and an InputBar; the InputBar is provided an empty
+ * no-op `onSubmit` handler.
+ *
+ * @returns The root JSX element tree for the CLI application.
+ */
 function App() {
     return (
         <box

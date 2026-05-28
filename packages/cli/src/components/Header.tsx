@@ -1,3 +1,10 @@
+/**
+ * Renders a centered header composed of two ASCII-styled text elements: "Atom" (gray) and "Code" (white).
+ *
+ * The elements are arranged horizontally with spacing and vertically centered.
+ *
+ * @returns The header as a JSX element.
+ */
 export function Header() {
     return (
         <box justifyContent="center" alignItems="center">
