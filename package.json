@@ -1,0 +1,15 @@
+{
+  "name": "atomcode",
+  "version": "0.0.1",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:cli": "bun run --watch packages/cli/src/index.tsx",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check"
+  },
+  "dependencies": {
+    "oxfmt": "^0.52.0"
+  }
+}
