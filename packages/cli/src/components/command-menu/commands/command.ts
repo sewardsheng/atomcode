@@ -5,6 +5,12 @@ export const COMMANDS: Command[] = [
         name: 'new',
         description: 'Start a new session with empty context',
         value: '/new',
+        action: (ctx) => {
+            ctx.toast.show({
+                message: 'New session started',
+                variant: 'success',
+            });
+        },
     },
     {
         name: 'agents',
