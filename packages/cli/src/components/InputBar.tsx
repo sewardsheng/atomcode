@@ -6,6 +6,7 @@ import { useRef, useCallback, useEffect } from 'react';
 
 import type { Command } from './command-menu/types';
 
+import { useKeyboardLayer } from '../providers/keyboard-layer';
 import { useToast } from '../providers/toast';
 import { EmptyBorder } from './Border';
 import { CommandMenu } from './command-menu';
@@ -29,6 +30,7 @@ export function InputBar({ onSubmit, disabled = false }: Props) {
     const textareaRef = useRef<TextareaRenderable>(null);
     const onSubmitRef = useRef<() => void>(() => {});
     const toast = useToast();
+    const { isTopLayer, setResponder } = useKeyboardLayer();
     const renderer = useRenderer();
     const {
         showCommandMenu,
@@ -107,6 +109,24 @@ export function InputBar({ onSubmit, disabled = false }: Props) {
 
         handleSubmit();
     };
+
+    //regist the base layer responser for ctrl+c dismissal
+    useEffect(() => {
+        setResponder('base', () => {
+            if (disabled) return false;
+
+            const textarea = textareaRef.current;
+            if (textarea && textarea.plainText.length > 0) {
+                textarea.setText('');
+                return true;
+            }
+            return false;
+        });
+
+        return () => {
+            setResponder('base', null);
+        };
+    }, [disabled, setResponder]);
 
     return (
         <box width="100%" alignItems="center">
