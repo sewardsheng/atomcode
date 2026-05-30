@@ -3,7 +3,7 @@ import { createContext, useContext, useState, useCallback } from 'react';
 import type { DialogConfig } from './types';
 
 import { useKeyboardLayer } from '../keyboard-layer';
-import { Dialog } from './dialoa';
+import { Dialog } from './dialog';
 
 export type DialogContextValue = {
     open: (config: DialogConfig) => void;
