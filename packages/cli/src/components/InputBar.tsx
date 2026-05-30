@@ -6,6 +6,7 @@ import { useRef, useCallback, useEffect } from 'react';
 
 import type { Command } from './command-menu/types';
 
+import { useDialog } from '../providers/dialog';
 import { useKeyboardLayer } from '../providers/keyboard-layer';
 import { useToast } from '../providers/toast';
 import { EmptyBorder } from './Border';
@@ -30,6 +31,7 @@ export function InputBar({ onSubmit, disabled = false }: Props) {
     const textareaRef = useRef<TextareaRenderable>(null);
     const onSubmitRef = useRef<() => void>(() => {});
     const toast = useToast();
+    const dialog = useDialog();
     const { isTopLayer, setResponder } = useKeyboardLayer();
     const renderer = useRenderer();
     const {
@@ -73,6 +75,7 @@ export function InputBar({ onSubmit, disabled = false }: Props) {
                 command.action({
                     exit: () => renderer.destroy(),
                     toast,
+                    dialog,
                 });
             } else {
                 textarea.insertText(command.value + ' ');

@@ -27,6 +27,10 @@ export function useCommandMenu(): UseCommandMenuReturn {
 
     const filteredCommands = useMemo(() => getFilteredCommands(commandQuery), [commandQuery]);
 
+    const close = () => {
+        setShowCommandMenu(false);
+        pop('command');
+    }
     //handle content change
     //jump to top of the scroll box
     const handleContentChange = (text: string) => {
@@ -42,13 +46,11 @@ export function useCommandMenu(): UseCommandMenuReturn {
         if (prefix !== null && !prefix.includes(" ")) {
             setShowCommandMenu(true);
             push('command', () => {
-                setShowCommandMenu(false);
-                pop('command');
+                close();
                 return true;
             });
         } else {
-            setShowCommandMenu(false);
-            pop('command');
+            close();
         }
     }
 
@@ -56,8 +58,7 @@ export function useCommandMenu(): UseCommandMenuReturn {
     const resolveCommand = (index: number): Command | undefined => {
         const cmd = filteredCommands[index];
         if (cmd) {
-            setShowCommandMenu(false);
-            pop('command');
+            close();
         }
         return cmd;
     }
@@ -92,8 +93,7 @@ export function useCommandMenu(): UseCommandMenuReturn {
         const keyHandlers: Record<string, () => void> = {
             escape: () => {
                 key.preventDefault();
-                setShowCommandMenu(false);
-                pop('command');
+                close();
             },
             up: () => moveSelection(-1),
             down: () => moveSelection(1),
