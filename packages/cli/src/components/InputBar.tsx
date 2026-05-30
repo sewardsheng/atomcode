@@ -8,6 +8,7 @@ import type { Command } from './command-menu/types';
 
 import { useDialog } from '../providers/dialog';
 import { useKeyboardLayer } from '../providers/keyboard-layer';
+import { useTheme } from '../providers/theme';
 import { useToast } from '../providers/toast';
 import { EmptyBorder } from './Border';
 import { CommandMenu } from './command-menu';
@@ -28,6 +29,7 @@ export const TEXTAREA_KEY_BINDINGS: KeyBinding[] = [
 ];
 
 export function InputBar({ onSubmit, disabled = false }: Props) {
+    const { colors } = useTheme();
     const textareaRef = useRef<TextareaRenderable>(null);
     const onSubmitRef = useRef<() => void>(() => {});
     const toast = useToast();
@@ -135,7 +137,7 @@ export function InputBar({ onSubmit, disabled = false }: Props) {
         <box width="100%" alignItems="center">
             <box
                 border={['left']}
-                borderColor="#66ccff"
+                borderColor="colors.primary"
                 customBorderChars={{
                     ...EmptyBorder,
                     vertical: '┃',
@@ -148,7 +150,7 @@ export function InputBar({ onSubmit, disabled = false }: Props) {
                     justifyContent="center"
                     paddingX={2}
                     paddingY={1}
-                    backgroundColor="#1A1A24"
+                    backgroundColor={colors.surface}
                     width="100%"
                     gap={1}
                 >
@@ -158,7 +160,7 @@ export function InputBar({ onSubmit, disabled = false }: Props) {
                             bottom="100%"
                             left={0}
                             width="100%"
-                            backgroundColor="#1A1A24"
+                            backgroundColor={colors.surface}
                             zIndex={10}
                         >
                             <CommandMenu

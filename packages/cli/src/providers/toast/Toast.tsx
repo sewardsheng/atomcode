@@ -3,12 +3,14 @@ import { useTerminalDimensions } from '@opentui/react';
 import type { ToastOptions, ToastVariant } from './types';
 
 import { SplitBorderChars } from '../../components/Border';
+import { useTheme } from '../theme';
 
 type ToastProps = {
     currentToast: ToastOptions | null;
 };
 
 export function Toast({ currentToast }: ToastProps) {
+    const { colors } = useTheme();
     if (!currentToast) {
         return null;
     }
@@ -16,9 +18,9 @@ export function Toast({ currentToast }: ToastProps) {
     const { width } = useTerminalDimensions();
 
     const variantColor: Record<ToastVariant, string> = {
-        info: '#00AAFF',
-        success: '#00AA44',
-        error: '#DD4444',
+        info: colors.info,
+        success: colors.success,
+        error: colors.error,
     };
     const borderColor = currentToast.variant
         ? variantColor[currentToast.variant]
@@ -36,7 +38,7 @@ export function Toast({ currentToast }: ToastProps) {
             paddingRight={2}
             paddingTop={1}
             paddingBottom={1}
-            backgroundColor="#1A1A22"
+            backgroundColor={colors.surface}
             borderColor={borderColor}
             border={['left', 'right']}
             customBorderChars={SplitBorderChars}
