@@ -5,6 +5,7 @@ import {
     useRef,
     useState,
     useCallback,
+    type ReactNode,
 } from 'react';
 
 import type { ToastOptions, ToastVariant } from './types';
@@ -29,7 +30,7 @@ export function useToast(): ToastContextValue {
 
 // Provider Components
 type ToastProviderProps = {
-    children: React.ReactNode;
+    children: ReactNode;
 };
 
 export function ToastProvider({ children }: ToastProviderProps) {

@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, useCallback } from 'react';
+import {
+    createContext,
+    useContext,
+    useState,
+    useCallback,
+    type ReactNode,
+} from 'react';
 
 import type { DialogConfig } from './types';
 
@@ -21,7 +27,7 @@ export function useDialog(): DialogContextValue {
 }
 
 type DialogProviderProps = {
-    children: React.ReactNode;
+    children: ReactNode;
 };
 
 export function DialogProvider({ children }: DialogProviderProps) {

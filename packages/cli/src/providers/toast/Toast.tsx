@@ -11,11 +11,10 @@ type ToastProps = {
 
 export function Toast({ currentToast }: ToastProps) {
     const { colors } = useTheme();
+    const { width } = useTerminalDimensions();
     if (!currentToast) {
         return null;
     }
-
-    const { width } = useTerminalDimensions();
 
     const variantColor: Record<ToastVariant, string> = {
         info: colors.info,

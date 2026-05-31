@@ -137,7 +137,7 @@ export function InputBar({ onSubmit, disabled = false }: Props) {
         <box width="100%" alignItems="center">
             <box
                 border={['left']}
-                borderColor="colors.primary"
+                borderColor={colors.primary}
                 customBorderChars={{
                     ...EmptyBorder,
                     vertical: '┃',

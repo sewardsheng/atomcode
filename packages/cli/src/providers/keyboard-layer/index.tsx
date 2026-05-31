@@ -5,6 +5,7 @@ import React, {
     useState,
     useCallback,
     useRef,
+    type ReactNode,
 } from 'react';
 
 type Responder = () => boolean;
@@ -20,11 +21,7 @@ const KeyboardLayerContext = createContext<KeyboardLayerContextValue | null>(
     null,
 );
 
-export function KeyboardLayerProvider({
-    children,
-}: {
-    children: React.ReactNode;
-}) {
+export function KeyboardLayerProvider({ children }: { children: ReactNode }) {
     const [stack, setStack] = useState<string[]>(['base']);
     const stackRef = useRef(stack);
     stackRef.current = stack;
