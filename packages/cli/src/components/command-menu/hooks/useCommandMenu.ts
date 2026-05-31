@@ -3,6 +3,8 @@ import type { Command } from "../types";
 import { useMemo, useRef, useState } from "react";
 import { getFilteredCommands } from "../utils/filterCommand";
 import { useKeyboard } from "@opentui/react";
+import { useKeyboardLayer } from "../../../providers/keyboard-layer";
+
 
 type UseCommandMenuReturn = {
     showCommandMenu: boolean;
@@ -19,11 +21,16 @@ export function useCommandMenu(): UseCommandMenuReturn {
     const [textValue, setTextValue] = useState("");
     const [selectedIndex, setSelectedIndex] = useState(0);
     const scrollRef = useRef<ScrollBoxRenderable>(null);
+    const { pop, push, isTopLayer } = useKeyboardLayer();
 
     const commandQuery = showCommandMenu && textValue.startsWith("/") ? textValue.slice(1) : "";
 
     const filteredCommands = useMemo(() => getFilteredCommands(commandQuery), [commandQuery]);
 
+    const close = () => {
+        setShowCommandMenu(false);
+        pop('command');
+    }
     //handle content change
     //jump to top of the scroll box
     const handleContentChange = (text: string) => {
@@ -38,8 +45,12 @@ export function useCommandMenu(): UseCommandMenuReturn {
         const prefix = text.startsWith("/") ? text.slice(1) : null;
         if (prefix !== null && !prefix.includes(" ")) {
             setShowCommandMenu(true);
+            push('command', () => {
+                close();
+                return true;
+            });
         } else {
-            setShowCommandMenu(false);
+            close();
         }
     }
 
@@ -47,7 +58,7 @@ export function useCommandMenu(): UseCommandMenuReturn {
     const resolveCommand = (index: number): Command | undefined => {
         const cmd = filteredCommands[index];
         if (cmd) {
-            setShowCommandMenu(false);
+            close();
         }
         return cmd;
     }
@@ -57,7 +68,7 @@ export function useCommandMenu(): UseCommandMenuReturn {
     //arrow key move selection;
     //the list follow along when the highlight goes off-screen
     useKeyboard((key) => {
-        if (!showCommandMenu) return;
+        if (!showCommandMenu || !isTopLayer("command")) return;
 
         const moveSelection = (delta: number) => {
             key.preventDefault();
@@ -82,7 +93,7 @@ export function useCommandMenu(): UseCommandMenuReturn {
         const keyHandlers: Record<string, () => void> = {
             escape: () => {
                 key.preventDefault();
-                setShowCommandMenu(false);
+                close();
             },
             up: () => moveSelection(-1),
             down: () => moveSelection(1),
