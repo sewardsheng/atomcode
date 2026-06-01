@@ -1,0 +1,22 @@
+{
+    "name": "@atomcode/database",
+    "private": true,
+    "type": "module",
+    "exports": {
+        ".": "./src/index.ts",
+        "./client": "./src/client.ts",
+        "./enums": "./src/enums.ts"
+    },
+    "scripts": {
+        "db:generate": "bunx prisma generate"
+    },
+    "dependencies": {
+        "@prisma/adapter-pg": "^7.7.0",
+        "@prisma/client": "^7.7.0",
+        "dotenv": "^17.4.1"
+    },
+    "devDependencies": {
+        "@types/node": "^25.5.2",
+        "prisma": "^7.7.0"
+    }
+}
