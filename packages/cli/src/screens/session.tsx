@@ -1,6 +1,6 @@
 import type { InferResponseType } from 'hono/client';
 
-import { MessageStatus } from '@atomcode/database/enums';
+import { MessageStatus, Mode } from '@atomcode/database/enums';
 import {
     DEFAULT_CHAT_MODEL_ID,
     type SupportedChatModelId,
@@ -115,7 +115,7 @@ function SessionChat({ session }: { session: SessionData }) {
             onSubmit={(text) =>
                 submit({
                     userText: text,
-                    mode: 'BUILD',
+                    mode: Mode.BUILD,
                     model: DEFAULT_CHAT_MODEL_ID,
                 })
             }

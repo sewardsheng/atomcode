@@ -9,10 +9,15 @@ function getOpenAICompatibleModels() {
         throw new Error('MODEL_API_KEY environment variable is required for openai-compatible provider');
     }
 
+    const baseURL = process.env.MODEL_API_BASE;
+    if (!baseURL) {
+        throw new Error('MODEL_API_BASE environment variable is required for openai-compatible provider');
+    }
+
     return createOpenAICompatible({
         name: 'silicon',
         apiKey,
-        baseURL: process.env.MODEL_API_BASE || "",
+        baseURL,
         includeUsage: true,
     });
 }

@@ -1,3 +1,4 @@
+import { Mode } from '@atomcode/database/enums';
 import { DEFAULT_CHAT_MODEL_ID } from '@atomcode/shared';
 import { useEffect, useMemo, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router';
@@ -46,7 +47,7 @@ export function NewSession() {
                         initialMessage: {
                             role: 'USER',
                             content: state.message,
-                            mode: 'BUILD',
+                            mode: Mode.BUILD,
                             model: DEFAULT_CHAT_MODEL_ID,
                         },
                     },
