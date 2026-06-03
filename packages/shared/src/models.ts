@@ -3,7 +3,7 @@ export type ModelPricing = {
     outputUsdPerMillionTokens: number;
 };
 
-export type SupportedProvider = "anthropic" | "openai" | "deepseek" | "zhipu" | "minimax";
+export type SupportedProvider = "anthropic" | "openai" | "deepseek" | "openai-compatible";
 
 type SupportedChatModelDefinition = {
     id: string;
@@ -77,21 +77,13 @@ export const SUPPORTED_CHAT_MODELS = [
         },
     },
     {
-        id: "GLM-5.1",
-        provider: "zhipu",
-        pricing: {
-            inputUsdPerMillionTokens: 6,
-            outputUsdPerMillionTokens: 24,
-        },
-    },
-    {
-        id: "Minimax-2.7",
-        provider: "minimax",
+        id: "mimo-v2.5-pro",
+        provider: "openai-compatible",
         pricing: {
             inputUsdPerMillionTokens: 1,
-            outputUsdPerMillionTokens: 2,
+            outputUsdPerMillionTokens: 6,
         },
-    },
+    }
 ] as const satisfies readonly SupportedChatModelDefinition[];
 
 export type SupportedChatModel = (typeof SUPPORTED_CHAT_MODELS)[number];
@@ -101,4 +93,4 @@ export function findSupportedChatModel(modelId: string) {
     return SUPPORTED_CHAT_MODELS.find((model) => model.id === modelId);
 }
 
-export const DEFAULT_CHAT_MODEL_ID: SupportedChatModelId = "deepseek-V4-Pro";
+export const DEFAULT_CHAT_MODEL_ID: SupportedChatModelId = "mimo-v2.5-pro";
