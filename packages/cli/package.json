@@ -7,11 +7,14 @@
         "dev": "bun run --watch src/index.tsx"
     },
     "dependencies": {
+        "@atomcode/database": "workspace:*",
         "@atomcode/shared": "workspace:*",
         "@opentui/core": "^0.3.0",
         "@opentui/react": "^0.3.0",
+        "eventsource-parser": "^3.1.0",
         "hono": "^4.12.23",
         "opentui-spinner": "^0.0.6",
+        "pretty-ms": "^9.3.0",
         "react": "^19.2.6",
         "react-router": "^7.16.0",
         "zod": "^4.4.3"
