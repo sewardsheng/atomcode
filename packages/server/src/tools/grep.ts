@@ -7,7 +7,7 @@ const MAX_MATCHES = 50;
 export function createGrepTool(cwd: string) {
     return tool({
         description:
-            "根据正则表达式模式搜索文件内容。返回匹配的行，包含隐藏目录、node_modules目录和二进制文件。",
+            "根据正则表达式模式搜索文件内容。返回匹配的行，排除隐藏目录、node_modules目录。",
         inputSchema: z.object({
             pattern: z.string().describe("要搜索的正则表达式模式"),
             path: z
