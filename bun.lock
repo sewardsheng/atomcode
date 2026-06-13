@@ -52,6 +52,7 @@
         "@ai-sdk/deepseek": "^2.0.35",
         "@ai-sdk/openai": "^3.0.67",
         "@ai-sdk/openai-compatible": "^2.0.48",
+        "@ai-sdk/provider-utils": "^4.0.27",
         "@atomcode/database": "workspace:*",
         "@atomcode/shared": "workspace:*",
         "@hono/zod-validator": "^0.8.0",

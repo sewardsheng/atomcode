@@ -1,7 +1,17 @@
-import { anthropic } from "@ai-sdk/anthropic";
-import { openai } from "@ai-sdk/openai";
-import { deepseek } from '@ai-sdk/deepseek';
+import { anthropic, type AnthropicLanguageModelOptions } from "@ai-sdk/anthropic";
+import { openai, type OpenAILanguageModelResponsesOptions } from "@ai-sdk/openai";
+import { deepseek, type DeepSeekLanguageModelOptions } from '@ai-sdk/deepseek';
 import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
+import {
+    findSupportedChatModel,
+    type SupportedChatModel,
+    type SupportedChatModelId,
+    type SupportedProvider,
+} from '@atomcode/shared';
+
+import type { ProviderOptions } from "@ai-sdk/provider-utils";
+import type { LanguageModel } from "ai";
+
 
 function getOpenAICompatibleModels() {
     const apiKey = process.env.MODEL_API_KEY;
@@ -22,14 +32,7 @@ function getOpenAICompatibleModels() {
     });
 }
 
-import {
-    findSupportedChatModel,
-    type SupportedChatModel,
-    type SupportedChatModelId,
-    type SupportedProvider,
-} from '@atomcode/shared';
 
-import type { LanguageModel } from "ai";
 
 type AnthropicModelId = Extract<SupportedChatModel, { provider: "anthropic" }>["id"];
 type OpenAIModelId = Extract<SupportedChatModel, { provider: "openai" }>["id"];
@@ -40,6 +43,60 @@ export type ResolvedModel = {
     model: LanguageModel;
     provider: SupportedProvider;
     modelId: SupportedChatModelId;
+    providerOptions?: ProviderOptions;
+};
+
+const ANTHROPIC_PROVIDER_OPTIONS: Partial<Record<AnthropicModelId, ProviderOptions>> = {
+    "claude-opus-4.6": {
+        anthropic: {
+            thinking: { type: 'enabled', budgetTokens: 8000 },
+            effort: 'medium',
+        } satisfies AnthropicLanguageModelOptions,
+    },
+    "claude-sonnet-4.6": {
+        anthropic: {
+            thinking: { type: 'enabled', budgetTokens: 8000 },
+            effort: 'medium',
+        } satisfies AnthropicLanguageModelOptions,
+    },
+};
+const OPENAI_PROVIDER_OPTIONS: Partial<Record<OpenAIModelId, ProviderOptions>> = {
+    "gpt-5.4": {
+        openai: {
+            reasoningEffort: 'high',
+            reasoningSummary: 'detailed',
+        } satisfies OpenAILanguageModelResponsesOptions,
+    },
+};
+
+const DEEPSEEK_PROVIDER_OPTIONS: Partial<Record<DeepseekModelId, ProviderOptions>> = {
+    "deepseek-v4-pro": {
+        deepseek: {
+            thinking: { type: 'enabled' },
+            reasoningEffort: 'high',
+        } satisfies DeepSeekLanguageModelOptions,
+    },
+    "deepseek-v4-flash": {
+        deepseek: {
+            thinking: { type: 'enabled' },
+            reasoningEffort: 'medium',
+        } satisfies DeepSeekLanguageModelOptions,
+    },
+};
+
+const OPENAI_COMPATIBLE_PROVIDER_OPTIONS: Partial<Record<OpenAICompatibleModelId, ProviderOptions>> = {
+    "nex-agi/Nex-N2-Pro": {
+        openai: {
+            reasoningEffort: 'high',
+            reasoningSummary: 'detailed',
+        } satisfies OpenAILanguageModelResponsesOptions,
+    },
+    "Qwen/Qwen3.5-27B": {
+        openai: {
+            reasoningEffort: 'high',
+            reasoningSummary: 'detailed',
+        } satisfies OpenAILanguageModelResponsesOptions,
+    },
 };
 
 //确保 provider 是support的
@@ -53,6 +110,7 @@ function resolveAnthropicModel(modelId: AnthropicModelId): ResolvedModel {
         model: anthropic(modelId),
         provider: "anthropic",
         modelId,
+        providerOptions: ANTHROPIC_PROVIDER_OPTIONS[modelId],
     };
 };
 
@@ -62,6 +120,7 @@ function resolveOpenAIModel(modelId: OpenAIModelId): ResolvedModel {
         model: openai(modelId),
         provider: "openai",
         modelId,
+        providerOptions: OPENAI_PROVIDER_OPTIONS[modelId],
     };
 };
 
@@ -70,6 +129,7 @@ function resolveDeepseekModel(modelId: DeepseekModelId): ResolvedModel {
         model: deepseek(modelId),
         provider: "deepseek",
         modelId,
+        providerOptions: DEEPSEEK_PROVIDER_OPTIONS[modelId],
     };
 }
 
@@ -78,6 +138,7 @@ function resolveOpenAICompatibleModel(modelId: OpenAICompatibleModelId): Resolve
         model: getOpenAICompatibleModels()(modelId),
         provider: 'openai-compatible',
         modelId,
+        providerOptions: OPENAI_COMPATIBLE_PROVIDER_OPTIONS[modelId],
     };
 }
 
