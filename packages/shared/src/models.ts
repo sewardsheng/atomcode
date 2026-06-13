@@ -13,7 +13,7 @@ type SupportedChatModelDefinition = {
 
 export const SUPPORTED_CHAT_MODELS = [
     {
-        id: "claude-sonnet-4-6",
+        id: "claude-sonnet-4.6",
         provider: "anthropic",
         pricing: {
             inputUsdPerMillionTokens: 3,
@@ -21,7 +21,7 @@ export const SUPPORTED_CHAT_MODELS = [
         },
     },
     {
-        id: "claude-haiku-4-5",
+        id: "claude-haiku-4.5",
         provider: "anthropic",
         pricing: {
             inputUsdPerMillionTokens: 1,
@@ -29,7 +29,7 @@ export const SUPPORTED_CHAT_MODELS = [
         },
     },
     {
-        id: "claude-opus-4-6",
+        id: "claude-opus-4.6",
         provider: "anthropic",
         pricing: {
             inputUsdPerMillionTokens: 5,
@@ -61,7 +61,7 @@ export const SUPPORTED_CHAT_MODELS = [
         },
     },
     {
-        id: "deepseek-V4-Pro",
+        id: "deepseek-v4-pro",
         provider: "deepseek",
         pricing: {
             inputUsdPerMillionTokens: 3,
@@ -69,7 +69,7 @@ export const SUPPORTED_CHAT_MODELS = [
         },
     },
     {
-        id: "deepseek-V4-Flash",
+        id: "deepseek-v4-flash",
         provider: "deepseek",
         pricing: {
             inputUsdPerMillionTokens: 1,
@@ -77,7 +77,15 @@ export const SUPPORTED_CHAT_MODELS = [
         },
     },
     {
-        id: "mimo-v2.5-pro",
+        id: "nex-agi/Nex-N2-Pro",
+        provider: "openai-compatible",
+        pricing: {
+            inputUsdPerMillionTokens: 1,
+            outputUsdPerMillionTokens: 6,
+        },
+    },
+    {
+        id: "Qwen/Qwen3.5-27B",
         provider: "openai-compatible",
         pricing: {
             inputUsdPerMillionTokens: 1,
@@ -93,4 +101,4 @@ export function findSupportedChatModel(modelId: string) {
     return SUPPORTED_CHAT_MODELS.find((model) => model.id === modelId);
 }
 
-export const DEFAULT_CHAT_MODEL_ID: SupportedChatModelId = "mimo-v2.5-pro";
+export const DEFAULT_CHAT_MODEL_ID: SupportedChatModelId = "Qwen/Qwen3.5-27B";

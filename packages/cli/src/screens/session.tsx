@@ -2,7 +2,7 @@ import type { InferResponseType } from 'hono/client';
 
 import { MessageStatus, Mode } from '@atomcode/database/enums';
 import {
-    DEFAULT_CHAT_MODEL_ID,
+    messagePartsSchema,
     type SupportedChatModelId,
 } from '@atomcode/shared';
 import { useKeyboard } from '@opentui/react';
@@ -21,6 +21,7 @@ import {
 import { apiClient } from '../lib/apiClient';
 import { getErrorMessage } from '../lib/httpError';
 import { useKeyboardLayer } from '../providers/keyboard-layer';
+import { usePromptConfig } from '../providers/prompt-config';
 import { useToast } from '../providers/toast';
 
 type SessionData = InferResponseType<
@@ -49,14 +50,22 @@ function mapDbMessages(dbMessages: SessionData['messages']): Message[] {
                 model: m.model as SupportedChatModelId,
             };
         }
-
+        const parsedParts =
+            m.parts == null ? null : messagePartsSchema.safeParse(m.parts);
+        const parts: ClientMessagePart[] = parsedParts?.success
+            ? parsedParts.data.map((p) =>
+                  p.type === 'tool-call'
+                      ? { ...p, status: 'done' as const }
+                      : p,
+              )
+            : [];
         return {
             id: m.id,
             role: 'assistant',
             content: m.content,
             model: m.model as SupportedChatModelId,
             mode: m.mode,
-            parts: [{ type: 'text', text: m.content }],
+            parts,
             ...(m.duration != null
                 ? { duration: prettyMs(m.duration * 1000) }
                 : {}),
@@ -67,7 +76,7 @@ function mapDbMessages(dbMessages: SessionData['messages']): Message[] {
 
 function ChatMessage({ msg }: { msg: Message }) {
     if (msg.role === 'user') {
-        return <UserMessage message={msg.content} />;
+        return <UserMessage message={msg.content} mode={msg.mode} />;
     }
 
     if (msg.role === 'error') {
@@ -87,6 +96,7 @@ function ChatMessage({ msg }: { msg: Message }) {
 }
 function SessionChat({ session }: { session: SessionData }) {
     const [initialMessages] = useState(() => mapDbMessages(session.messages));
+    const { mode, model } = usePromptConfig();
     const { isTopLayer } = useKeyboardLayer();
     const { messages, streaming, submit, abort, interrupt } = useChat(
         session.id,
@@ -115,8 +125,8 @@ function SessionChat({ session }: { session: SessionData }) {
             onSubmit={(text) =>
                 submit({
                     userText: text,
-                    mode: Mode.BUILD,
-                    model: DEFAULT_CHAT_MODEL_ID,
+                    mode,
+                    model,
                 })
             }
             loading={streaming.status === 'streaming'}
