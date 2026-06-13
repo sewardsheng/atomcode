@@ -24,7 +24,13 @@ function formatToolName(name: string): string {
         .replace(/^./, (c) => c.toUpperCase());
 }
 function formatToolArgs(tc: ClientToolCallPart): string {
-    return Object.values(tc.args).map(String).join(' ');
+    return Object.entries(tc.args)
+        .map(([key, value]) => {
+            const rendered =
+                typeof value === 'string' ? value : JSON.stringify(value);
+            return `${key}=${rendered}`;
+        })
+        .join(' ');
 }
 
 type PartGroup = {

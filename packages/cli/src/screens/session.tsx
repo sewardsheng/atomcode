@@ -52,13 +52,21 @@ function mapDbMessages(dbMessages: SessionData['messages']): Message[] {
         }
         const parsedParts =
             m.parts == null ? null : messagePartsSchema.safeParse(m.parts);
-        const parts: ClientMessagePart[] = parsedParts?.success
-            ? parsedParts.data.map((p) =>
-                  p.type === 'tool-call'
-                      ? { ...p, status: 'done' as const }
-                      : p,
-              )
-            : [];
+
+        const parsedClientParts: ClientMessagePart[] | null =
+            parsedParts?.success
+                ? parsedParts.data.map((p) =>
+                      p.type === 'tool-call'
+                          ? { ...p, status: 'done' as const }
+                          : p,
+                  )
+                : null;
+        const parts: ClientMessagePart[] =
+            parsedClientParts && parsedClientParts.length > 0
+                ? parsedClientParts
+                : m.content
+                  ? [{ type: 'text', text: m.content }]
+                  : [];
         return {
             id: m.id,
             role: 'assistant',
